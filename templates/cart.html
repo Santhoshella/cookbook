@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cart</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="navbar-brand" href="#">CookBook</a>
+                </li>
+                {% if session['loggedIn'] == True %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('cookbook')}}" class="btn btn-primary">All Recipes</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('search_recipes')}}" class="btn btn-primary">Search Recipe</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('logout_user')}}" class="btn btn-primary">Log Out</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('index_page')}}" class="btn btn-primary btn-block">Log In</a>
+                </li>
+                {% endif %}
+            </ul>
+          </nav>
+        <div class="container" style="margin-top: 50px;">
+            <div class="row">
+                {% if session['loggedIn'] == True %}
+                <div class="col">
+                    <h1>Cart of user {{ session['userid'] }}</h1>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Recipe Name</th>
+                                <th scope="col">image</th>
+                                <th scope="col">Ratings</th>
+                                <th scope="col">Author</th>
+                                <th scope="col">Price $</th>
+                                <th scope="col">Remove</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for recipe in data %}
+                            <tr>
+                                <td>{{recipe[1]}}</td>
+                                <td><img src="{{url_for('static', filename='imgs/' + recipe[2])}}" style="height: 100px;"/></td>
+                                <td>{{recipe[5]}}</td>
+                                <td>{{recipe[8]}}</td>
+                                <td>{{recipe[9]}}</td>
+                                <td>
+                                    <form action="/removeFromCart" method="POST">
+                                        <button value="{{recipe[0]}}" name="id" type="submit" class="btn btn-danger btn-block">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="col">
+                    <div class="col">
+                        <h2 class="text-center">Please log in</h2>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <div class="row">
+                {% if session['loggedIn'] == True %}
+                <div class="col-4"></div>
+                <div class="col-4"></div>
+                <div class="col">
+                    {% if amount == 0 %}
+                    <h3>Your cart is empty</h3>
+                    {% else %}
+                    <h3>Total amount : $ {{amount}}</h3>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </body>
+</html>

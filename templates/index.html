@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Cook Book</title>
+        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">CookBook</a>
+        </nav>
+        <div class="container">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col">
+                    <h1 class="page-header">Welcome to CookBook !</h1>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col">
+                    <form action="/login" method="POST">
+                        <h3>Login</h3>
+                        {% with msgs = get_flashed_messages(with_categories=true) %}
+                            {% if msgs %}
+                                {% for ctg, msg in msgs %}
+                                    <div class="alert alert-{{ ctg }}">{{ msg }}</div>
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
+                        <div class="form-group">
+                            <lable>Userid</lable>
+                            <input type="text" name="userid" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <lable>Password</lable>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" value="Login" class="btn btn-success btn-block">
+                            <a href="{{ url_for('register_user') }}" class="btn btn-primary btn-block">Register</a>
+                        </div>
+                    </form>
+                </div>
+                <div class="col"></div>
+            </div>
+        </div>
+    </body>
+</html>
+<script>
+    $(document).ready(
+        function(){
+            $(".alert").hide(5000)
+        }
+    );
+</script>
