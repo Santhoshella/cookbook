@@ -165,5 +165,8 @@ def add_recipe():
         return redirect(url_for("cookbook"))
     return render_template('add.html')
 
+def getApp():
+    return app
+
 if __name__ == "__main__":
     app.run(debug=True)
