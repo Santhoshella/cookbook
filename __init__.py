@@ -1,3 +1,4 @@
+from crypt import methods
 import os
 from flask import Flask
 from flask import render_template
@@ -13,8 +14,7 @@ IMG_EXTENSIONS = set(['jpeg', 'jpg', 'png'])
 
 db_con = sqlite3.connect("cookbook.db")
 db_con.execute("create table if not exists users(userid text primary key, mail text, password text)")
-db_con.execute("create table if not exists recipes(id integer primary key, rname text, image text, cooktime text, temp text, ratings text, ingredians text, steps text, author text, price text)")
-db_con.execute("create table if not exists cart(userid text, id integer, foreign key(userid) references users(userid), foreign key(id) references recipes(id), unique(userid, id))")
+db_con.execute("create table if not exists recipes(id integer primary key, rname text, image text, cooktime text, temp text, ratings text, ingredians text, steps text, author text, cal text,price text)")
 db_con.close()
 
 def check_file_extension(file):
@@ -67,50 +67,6 @@ def logout_user():
     session.clear()
     return redirect(url_for('index_page'))
 
-@app.route('/addToCart', methods=['GET', 'POST'])
-def add_to_cart():
-    if request.method == 'POST':
-        id = request.form['id']
-        db_con = sqlite3.connect("cookbook.db")
-        db_cur = db_con.cursor()
-        try:
-            db_cur.execute("insert into cart(userid, id)values(?,?)",(session['userid'], id))
-            db_con.commit()
-        except:
-            db_con.rollback()
-        db_con.close()
-    return redirect(url_for('cookbook'))
-
-@app.route('/removeFromCart', methods=['GET', 'POST'])
-def remove_from_cart():
-    if request.method == 'POST':
-        id = request.form['id']
-        db_con = sqlite3.connect("cookbook.db")
-        db_cur = db_con.cursor()
-        try:
-            db_cur.execute("delete from cart where userid=? and id=?", (session['userid'], id))
-            db_con.commit()
-        except:
-            db_con.rollback()
-        db_con.close()
-    return redirect(url_for('cart'))
-
-@app.route('/cart', methods=['GET', 'POST'])
-def cart():
-    db_con = sqlite3.connect("cookbook.db")
-    db_cur = db_con.cursor()
-    db_cur.execute("select * from cart")
-    data = db_cur.fetchall()
-    retdata = []
-    for i in range(len(data)):
-        db_cur.execute("select * from recipes where id=?", (data[i][1], ))
-        retdata.append(db_cur.fetchone())
-    db_con.close()
-    amount = 0
-    for i in range(len(retdata)):
-        amount += int(retdata[i][9])
-    return render_template("cart.html", data=retdata, amount=amount)
-
 @app.route('/cookbook', methods=['GET', 'POST'])
 def cookbook():
     db_con = sqlite3.connect("cookbook.db")
@@ -136,6 +92,16 @@ def search_recipes():
         return render_template("search.html", data=data)
     return render_template("search.html", data=None)
 
+@app.route('/viewRecipe', methods=['GET', 'POST'])
+def view_recipe():
+    if request.method == 'POST':
+        name = request.form['rname']
+        db_con = sqlite3.connect("cookbook.db")
+        db_cur = db_con.cursor()
+        db_cur.execute("select * from recipes where rname = '{0}'".format(name))
+        data = db_cur.fetchone()
+    return render_template('recipe.html', data=data)
+
 @app.route('/addRecipe', methods=['GET', 'POST'])
 def add_recipe():
     if request.method == 'POST':
@@ -147,6 +113,7 @@ def add_recipe():
         steps = request.form['steps']
         price = request.form['price']
         author = session['userid']
+        cal = request.form['cal']
         image = request.files['image']
         if image and check_file_extension(image.filename):
             upload_name = secure_filename(image.filename)
@@ -155,7 +122,7 @@ def add_recipe():
         db_con = sqlite3.connect("cookbook.db")
         try:
             db_cur = db_con.cursor()
-            db_cur.execute("insert into recipes(rname, image, cooktime, temp, ratings, ingredians, steps, author, price)values(?, ?, ?, ?, ?, ?, ?, ?, ?)", (rname, final_img_name, cooktime, temp, ratings, ingredians, steps, author, price))
+            db_cur.execute("insert into recipes(rname, image, cooktime, temp, ratings, ingredians, steps, author, cal ,price)values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", (rname, final_img_name, cooktime, temp, ratings, ingredians, steps, author, cal, price))
             db_con.commit()
             flash("Recipe Added successfully", "success")
         except:
@@ -165,8 +132,9 @@ def add_recipe():
         return redirect(url_for("cookbook"))
     return render_template('add.html')
 
+if __name__ == "__main__":
+    app.run(debug=True)
+
 def getApp():
     return app
 
-if __name__ == "__main__":
-    app.run(debug=True)
