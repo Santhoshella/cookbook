@@ -10,31 +10,40 @@
             <a class="navbar-brand" href="#">CookBook</a>
         </nav>
         <div class="container">
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col">
-                    <h3>Registration</h3>
-                    <form method="POST" action="/register">
-                        <div class="form-group">
-                            <label>Userid</label>
-                            <input type="text" class="form-control" name="userid" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Email</label>
-                            <input type="text" class="form-control" name="mail" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control" name="password" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-success btn-block" value="Register">
-                            <a href="{{url_for('index_page')}}" class="btn btn-primary btn-block">Back to Home</a>
-                        </div>
-                    </form>
+            <section class="text-center">
+                <div class="p-5 bg-image"
+                    style="background-image: url('{{url_for('static', filename='imgs/cookbook.jpg')}}'); height: 300px;">
                 </div>
-                <div class="col-3"></div>
-            </div>
+                <div class="card mx-4 mx-md-5 shadow-5-strong"
+                    style="margin-top: -100px; background: hsla(0, 0%, 95%, 0.79); backdrop-filter: blur(30px);">
+                    <div class="card-body py-5 px-md-5">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-lg-5">
+                                <h2 class="fw-bold mb-5">Registration</h2>
+                                <form method="POST" action="/register">
+                                    <div class="form-group">
+                                        <label>Userid</label>
+                                        <input type="text" class="form-control" name="userid" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input type="text" class="form-control" name="mail" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password</label>
+                                        <input type="password" class="form-control" name="password" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <br>
+                                        <input type="submit" class="btn btn-success btn-block" value="Register">
+                                        <a href="{{url_for('index_page')}}" class="btn btn-primary btn-block">Back to Home</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </body>
 </html>

@@ -1,56 +1,62 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Cook Book</title>
-        <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
-        <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
-    </head>
-    <body>
-        <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">CookBook</a>
-        </nav>
-        <div class="container">
-            <div class="row">
-                <div class="col-3"></div>
-                <div class="col">
-                    <h1 class="page-header">Welcome to CookBook !</h1>
-                </div>
-                <div class="col-3"></div>
+
+<head>
+    <title>Cook Book</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+    <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">CookBook</a>
+    </nav>
+    <div class="container">
+        <section class="text-center">
+            <div class="p-5 bg-image"
+                style="background-image: url('{{url_for('static', filename='imgs/cookbook.jpg')}}'); height: 300px;">
             </div>
-            <div class="row">
-                <div class="col"></div>
-                <div class="col">
-                    <form action="/login" method="POST">
-                        <h3>Login</h3>
-                        {% with msgs = get_flashed_messages(with_categories=true) %}
-                            {% if msgs %}
+            <div class="card mx-4 mx-md-5 shadow-5-strong"
+                style="margin-top: -100px; background: hsla(0, 0%, 95%, 0.79); backdrop-filter: blur(30px);">
+                <div class="card-body py-5 px-md-5">
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-5">
+                            <h2 class="fw-bold mb-5">Welcome to CookBook !</h2>
+                            <form action="/login" method="POST">
+                                {% with msgs = get_flashed_messages(with_categories=true) %}
+                                {% if msgs %}
                                 {% for ctg, msg in msgs %}
-                                    <div class="alert alert-{{ ctg }}">{{ msg }}</div>
+                                <div class="alert alert-{{ ctg }}">{{ msg }}</div>
                                 {% endfor %}
-                            {% endif %}
-                        {% endwith %}
-                        <div class="form-group">
-                            <lable>Userid</lable>
-                            <input type="text" name="userid" class="form-control" required>
+                                {% endif %}
+                                {% endwith %}
+                                <div class="form-group">
+                                    <lable>Userid</lable>
+                                    <input type="text" name="userid" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <lable>Password</lable>
+                                    <input type="password" name="password" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <br>
+                                    <input type="submit" value="Login" class="btn btn-success btn-block">
+                                    <a href="{{ url_for('register_user') }}"
+                                        class="btn btn-primary btn-block">Register</a>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <lable>Password</lable>
-                            <input type="password" name="password" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" value="Login" class="btn btn-success btn-block">
-                            <a href="{{ url_for('register_user') }}" class="btn btn-primary btn-block">Register</a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-                <div class="col"></div>
             </div>
-        </div>
-    </body>
+        </section>
+    </div>
+</body>
+
 </html>
 <script>
     $(document).ready(
-        function(){
+        function () {
             $(".alert").hide(5000)
         }
     );

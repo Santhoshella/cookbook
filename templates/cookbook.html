@@ -9,9 +9,15 @@
         <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="navbar-brand" href="#">CookBook</a>
+                    <a class="navbar-brand" href="{{url_for('cookbook')}}">CookBook</a>
                 </li>
                 {% if session['loggedIn'] == True %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('search_recipes')}}" class="btn btn-primary">Search Recipe</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('add_recipe')}}" class="btn btn-primary">Add Recipe</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('logout_user')}}" class="btn btn-primary">Log Out</a>
                 </li>
@@ -28,18 +34,6 @@
                 <div class="col">
                     <h2 class="page-header text-center">Welcome : {{session['userid']}}</h2>
                 </div>
-                <div class="col">
-                    <a href="{{url_for('add_recipe')}}" class="btn btn-primary btn-block">Add recipe</a>
-                </div>
-                <div class="col">
-                    <a href="{{url_for('search_recipes')}}" class="btn btn-primary btn-block">Search recipes</a>
-                </div>
-                <div class="col">
-                    <a href="{{url_for('cart')}}" class="btn btn-primary btn-block">Cart</a>
-                </div>
-                <div class="col">
-                    <a href="{{url_for('logout_user')}}" class="btn btn-primary btn-block">Logout</a>
-                </div>
                 {% else %}
                     <div class="col">
                         <h2 class="text-center">Please log in at</h2>
@@ -51,43 +45,50 @@
             </div>
             <br><br>
             <div class="row">
-                <h1>List of all recipes</h1>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Recipe Name</th>
-                            <th scope="col">image</th>
-                            <th scope="col">Cooking time</th>
-                            <th scope="col">Temprature</th>
-                            <th scope="col">Ratings</th>
-                            <th scope="col">Ingredians</th>
-                            <th scope="col">Steps</th>
-                            <th scope="col">Author</th>
-                            <th scope="col">Price $</th>
-                            <th scope="col"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for recipe in recipes %}
-                        <tr>
-                            <td>{{recipe[1]}}</td>
-                            <td><img src="{{url_for('static', filename='imgs/' + recipe[2])}}" style="height: 100px;"/></td>
-                            <td>{{recipe[3]}}</td>
-                            <td>{{recipe[4]}}</td>
-                            <td>{{recipe[5]}}</td>
-                            <td>{{recipe[6]}}</td>
-                            <td>{{recipe[7]}}</td>
-                            <td>{{recipe[8]}}</td>
-                            <td>{{recipe[9]}}</td>
-                            <td>
-                                <form action="/addToCart" method="POST">
-                                    <button value='{{recipe[0]}}' name="id" type="submit" class="btn btn-primary btn-block">cart+</button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <section class="text-center">
+                    <div class="p-5 bg-image"
+                        style="background-image: url('{{url_for('static', filename='imgs/blue.jpg')}}'); height: 300px;">
+                    </div>
+                    <div class="card mx-4 mx-md-5 shadow-5-strong"
+                        style="margin-top: -100px; background: hsla(242, 16%, 65%, 0.573); backdrop-filter: blur(30px);">
+                        <div class="card-body py-5 px-md-5">
+                            <div class="row d-flex justify-content-center">
+                                {% if session['loggedIn'] == True %}
+                                <div class="col-lg-5">
+                                    {% for recipe in recipes %}
+                                    <div class="card mb-3" style="max-width: 700px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-4">
+                                                <img src="{{url_for('static', filename='imgs/' + recipe[2])}}" class="img-fluid rounded-start" />
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{recipe[1]}}</h5>
+                                                    <p class="card-content">Ratings : {{recipe[5]}}</p>
+                                                    <form method="POST" action="/viewRecipe">
+                                                        <div class="form-group">
+                                                            <input type="hidden" name="rname" value="{{recipe[1]}}">
+                                                            <input type="submit" class="btn btn-success btn-block" value="  Details  ">
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="col">
+                                    <h2 class="text-center">Please log in at to add recipe</h2>
+                                </div>
+                                <div class="col">
+                                    <a href="{{url_for('index_page')}}" class="btn btn-primary btn-block">HomePage</a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
         </div>
     </body>
