@@ -21,6 +21,9 @@
                 <a class="nav-link" href="{{url_for('search_recipes')}}" class="btn btn-primary">Search Recipe</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{url_for('update')}}" class="btn btn-primary">Update Profile</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{url_for('logout_user')}}" class="btn btn-primary">Log Out</a>
             </li>
             {% else %}
@@ -71,6 +74,10 @@
                                     <div class="form-group">
                                         <label>Steps</label>
                                         <input type="text" class="form-control" name="steps" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Utensils</label>
+                                        <input type="text" class="form-control" name="uten" required>
                                     </div>
                                     <div class="form-group">
                                         <label>Calories</label>

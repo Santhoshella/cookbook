@@ -3,6 +3,7 @@
     <head>
         <title>Cook Book</title>
         <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
         <script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
     </head>
     <body>
@@ -20,6 +21,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('add_recipe')}}" class="btn btn-primary">Add Recipe</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('update')}}" class="btn btn-primary">Update Profile</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{url_for('logout_user')}}" class="btn btn-primary">Log Out</a>
@@ -58,7 +62,32 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Ratings</td>
-                                                    <td>{{data[5]}}</td>
+                                                    <td>{{data[5]}}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Number of reviews</td>
+                                                    <td>{{data[12]}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Give ratings</td>
+                                                    <td style="padding-left: 22%;">
+                                                        <form method="POST" action="/rateRecipe">
+                                                            <div class="form-group">
+                                                                <ul class="rate-area">
+                                                                    <input type="radio" id="5-star" name="rating" value="5" /><label for="5-star" title="Amazing">5 stars</label>
+                                                                    <input type="radio" id="4-star" name="rating" value="4" /><label for="4-star" title="Good">4 stars</label>
+                                                                    <input type="radio" id="3-star" name="rating" value="3" /><label for="3-star" title="Average">3 stars</label>
+                                                                    <input type="radio" id="2-star" name="rating" value="2" /><label for="2-star" title="Not Good">2 stars</label>
+                                                                    <input type="radio" id="1-star" name="rating" value="1" /><label for="1-star" title="Bad">1 star</label>
+                                                                    <input type="hidden" name="rname" value="{{data[1]}}">
+                                                                    <input type="hidden" name="nreviews" value="{{data[12]}}">
+                                                                    <input type="hidden" name="ratings" value="{{data[5]}}">
+                                                                </ul>
+                                                                <input type="submit" class="btn btn-success btn-block" value="Rate">
+                                                            </div>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                                 <tr>
                                                     <td>Ingredians</td>
@@ -70,15 +99,27 @@
                                                 </tr>
                                                 <tr>
                                                     <td>Author</td>
-                                                    <td>{{data[8]}}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Calories</td>
                                                     <td>{{data[9]}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <td>Price</td>
+                                                    <td>Calories</td>
                                                     <td>{{data[10]}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Price</td>
+                                                    <td>{{data[11]}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Cook this recipe</td>
+                                                    <td>
+                                                        <form method="POST" action="/cook">
+                                                            <div class="form-group">
+                                                                <input type="number" min="1" max="15" name="servings" value="1">
+                                                                <input type="hidden" name="rname" value="{{data[1]}}">
+                                                                <input type="submit" class="btn btn-success btn-block" value="  Cook  ">
+                                                            </div>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
